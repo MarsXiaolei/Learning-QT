@@ -1,4 +1,3 @@
-```CPP
 #include <QCoreApplication>
 #include <QList>
 #include <QString>
@@ -199,4 +198,3 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
-```
