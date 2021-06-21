@@ -1,6 +1,10 @@
 # Learning-QT 
 [了解GitHub-GFM语法规则](https://github.com/guodongxiaren/README "了解GitHub-GFM语法规则")
 
+## QT下载
+[中文官网下载](https://www.qt.io/zh-cn/download)<br>
+https://download.qt.io/archive/qt/<br>
+
 ## QT学习网站
 |序号|教程链接|备注|
 |:---:|:---:|:------:|
