@@ -119,19 +119,19 @@ int main(int argc, char *argv[])
     Teacher *teacherC = new Teacher("朱雀","female","math");
     Teacher *teacherD = new Teacher("玄武","male","music");
 
-    QList<Teacher *> list_2;
-    list_2<<teacherA<<teacherB<<teacherC<<teacherD;
+    QList<Teacher **> list_2;
+    list_2<<&teacherA<<&teacherB<<&teacherC<<&teacherD;
 
     /// 使用foreach遍历
     foreach (auto teacher, list_2)
     {
-        qDebug().noquote()<<"name ="<<teacher->name()
-               <<"gender ="<<teacher->gender()
-              <<"m_course ="<<teacher->course();
+        qDebug().noquote()<<"name ="<<(*teacher)->name()
+               <<"gender ="<<(*teacher)->gender()
+              <<"m_course ="<<(*teacher)->course();
     }
 
     /// 查询列表项目位置
-    int index = list_2.indexOf(teacherB);
+    int index = list_2.indexOf((&teacherB));
     if(index != -1)
     {
         qDebug().noquote()<<"查询teacherB:";
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
     }
 
     /// 查询某个项目出现的次数
-    int num = list_2.count(teacherB);
+    int num = list_2.count((&teacherB));
     qDebug().noquote()<<teacherB->name()<<"出现的次数 ="<<num;
 
     /// 列表中项目的数量
@@ -151,49 +151,51 @@ int main(int argc, char *argv[])
     /// 全部删除
     while(!list_2.isEmpty())
     {
-        Teacher *teacher = NULL;
-        teacher = list_2.takeFirst();
-        qDebug().noquote()<<"当前移除的是 :"<<teacher->name();
-
-        /// 删除第一个
-        delete teacher;
+        //! 移除第一个，只删除了列表项，但teacherA分配的内存还在
+        Teacher **teacher = list_2.takeFirst();
+        qDebug().noquote()<<"当前移除的是 :"<<(*teacher)->name();
+        
+        delete *teacher;
+        *teacher = nullptr;     //! delete之后需要赋为空
 
         /// 删除最后一个
-        //delete list_2.takeLast();
-
-        //! 只删除了列表项，但teacherA以及其他变量都还在
+        //list_2.takeLast();
     }
 
     /// 手动释放内存
-    if(teacherA != NULL)
+    if(teacherA != nullptr)
     {
         qDebug().noquote()<<"teacherA != NULL."<<teacherA;
         delete teacherA;
-        qDebug().noquote()<<"finish delete teacherA.";
+        teacherA = nullptr;
+        qDebug().noquote()<<"finish delete teacherA."<<teacherA;
     }
 
     /// 手动释放内存
-    if(teacherB != NULL)
+    if(teacherB != nullptr)
     {
         qDebug().noquote()<<"teacherB != NULL."<<teacherB;
         delete teacherB;
-        qDebug().noquote()<<"finish delete teacherB.";
+        teacherB = nullptr;
+        qDebug().noquote()<<"finish delete teacherB."<<teacherB;
     }
 
     /// 手动释放内存
-    if(teacherC != NULL)
+    if(teacherC != nullptr)
     {
         qDebug().noquote()<<"teacherC != NULL."<<teacherC;
         delete teacherC;
-        qDebug().noquote()<<"finish delete teacherC.";
+        teacherC = nullptr;
+        qDebug().noquote()<<"finish delete teacherC."<<teacherC;
     }
 
     /// 手动释放内存
-    if(teacherD != NULL)
+    if(teacherD != nullptr)
     {
         qDebug().noquote()<<"teacherD != NULL."<<teacherD;
         delete teacherD;
-        qDebug().noquote()<<"finish delete teacherD.";
+        teacherD = nullptr;
+        qDebug().noquote()<<"finish delete teacherD."<<teacherD;
     }
 
     return a.exec();
